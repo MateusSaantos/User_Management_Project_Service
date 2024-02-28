@@ -15,16 +15,11 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
 
     @Transactional
-    public Usuario salvar(Usuario usuario) {
+    public Usuario salvar(Usuario usuario, boolean validation) {
         validarTamanhoNomes(usuario.getFirstName(), usuario.getLastName());
         validarFormatoEmail(usuario.getEmail());
-        validarEmailUnico(usuario.getEmail());
         validarFormatoCpf(usuario.getCpf());
-        validarCpfUnico(usuario.getCpf());
         validarTamanhoSenha(usuario.getPassword());
-
-        // Criptografar senha antes de salvar
-        //usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 
         return usuarioRepository.save(usuario);
     }
@@ -43,21 +38,9 @@ public class UsuarioService {
         }
     }
 
-    private void validarEmailUnico(String email) {
-        if (usuarioRepository.existsByEmail(email)) {
-            throw new RuntimeException("Email já cadastrado.");
-        }
-    }
-
     private void validarFormatoCpf(String cpf) {
         if (!cpf.matches("\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}")) {
             throw new RuntimeException("Formato de CPF inválido.");
-        }
-    }
-
-    private void validarCpfUnico(String cpf) {
-        if (usuarioRepository.existsByCpf(cpf)) {
-            throw new RuntimeException("CPF já cadastrado.");
         }
     }
 
@@ -77,5 +60,10 @@ public class UsuarioService {
     @Transactional(readOnly = true)
     public List<Usuario> buscarTodos() {
         return usuarioRepository.findAll();
+    }
+
+    public boolean validarCredenciais(String email, String senha) {
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        return usuario != null && senha.equals(usuario.getPassword());
     }
 }

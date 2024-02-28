@@ -18,7 +18,7 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) {
-        Usuario user = usuarioService.salvar(usuario);
+        Usuario user = usuarioService.salvar(usuario, true);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
@@ -48,7 +48,7 @@ public class UsuarioController {
             user.setPassword(updatedUsuario.getPassword());
             user.setActive(updatedUsuario.isActive());
 
-            Usuario updatedUser = usuarioService.salvar(user);
+            Usuario updatedUser = usuarioService.salvar(user, false);
 
             return ResponseEntity.ok(updatedUser);
         } else {
@@ -56,4 +56,31 @@ public class UsuarioController {
         }
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody Usuario usuario) {
+        if (usuarioService.validarCredenciais(usuario.getEmail(), usuario.getPassword())) {
+            return ResponseEntity.ok("Login bem-sucedido");
+        } else {
+            return ResponseEntity.badRequest().body("Credenciais inválidas");
+        }
+    }
+
+    @PutMapping("/{id}/password")
+    public ResponseEntity<String> alterarSenha(@PathVariable Long id, @RequestBody SenhaRequest senhaRequest) {
+        try {
+            Usuario usuario = usuarioService.buscarPorId(id);
+
+            if (usuario != null) {
+                usuario.setPassword(senhaRequest.getPassword());
+
+                usuarioService.salvar(usuario, false);
+
+                return ResponseEntity.ok("Senha alterada com sucesso");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro ao alterar a senha: " + e.getMessage());
+        }
+    }
 }
