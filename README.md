@@ -76,3 +76,8 @@ Certifique-se de ter essas ferramentas instaladas para contribuir e trabalhar no
 
 ### Duvidas e Dificuldades 📦
 Durante o desenvolvimento da aplicação, enfrentei desafios que contribuíram para o aprimoramento contínuo. Questões como validações de usuário, criptografia de senhas e controle de acesso demandaram atenção especial. A formatação adequada de datas na resposta e a configuração do ambiente Docker também foram pontos-chave. Essas dificuldades foram superadas por meio de pesquisa, colaboração com a equipe e aprendizado prático, resultando em uma compreensão mais profunda e refinada da aplicação.
+
+###  Meu Perfil no LinkedIn 👨‍💻
+https://www.linkedin.com/in/mateussantoss/
+
+Fique à vontade para enviar mensagens ou se conectar para trocarmos ideias sobre desenvolvimento de software, tecnologia e projetos interessantes. Estou ansioso para conversar!
